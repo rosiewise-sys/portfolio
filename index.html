@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Rosemary Wekesa — UI/UX Designer & WordPress Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    /* Warm, harmonious palette — terracotta + warm slate + aged cream */
+    --ink:     #1c1714;        /* warm near-black, not cold */
+    --paper:   #faf6f0;        /* soft aged cream */
+    --accent:  #b85c38;        /* terracotta — warm, not jarring */
+    --accent2: #1e2535;        /* deep warm slate-navy */
+    --muted:   #7c6f6a;        /* warm stone gray */
+    --card-bg: #f5ede3;        /* slightly warmer white */
+    --tag-bg:  #ede4d6;        /* warm sand tag */
+    --accent-light: #f0d9cd;   /* pale terracotta blush for tags */
+    --accent-dim:   #c97a58;   /* lighter terracotta for hover */
+    --border:  #d4c9bc;        /* warm border, not stark black */
+  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(--ink); line-height: 1.6; overflow-x: hidden; }
+
+  nav { display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 3rem; border-bottom: 1.5px solid var(--border); position: sticky; top: 0; background: var(--paper); z-index: 100; }
+  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; letter-spacing: -0.5px; color: var(--ink); }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a { font-size: 0.85rem; font-weight: 500; text-decoration: none; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--accent); }
+
+  .hero { display: grid; grid-template-columns: 1fr 1fr; min-height: 88vh; border-bottom: 1.5px solid var(--border); }
+  .hero-left { padding: 5rem 3rem; border-right: 1.5px solid var(--border); display: flex; flex-direction: column; justify-content: space-between; }
+  .hero-tag { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.5rem; }
+  .hero-name { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 6vw, 5.5rem); font-weight: 900; line-height: 1.0; letter-spacing: -2px; color: var(--ink); }
+  .hero-name span { color: var(--accent); }
+  .hero-sub { font-size: 1rem; color: var(--muted); font-weight: 300; max-width: 340px; margin-top: 1.5rem; line-height: 1.7; }
+  .hero-badges { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 2.5rem; }
+  .badge { display: inline-flex; align-items: center; gap: 6px; background: var(--accent2); color: var(--paper); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.06em; padding: 0.4rem 1rem; border-radius: 2px; }
+  .badge.outline { background: transparent; color: var(--ink); border: 1.5px solid var(--border); }
+  .hero-cta { margin-top: 3rem; display: flex; gap: 1rem; }
+  .btn { padding: 0.8rem 2rem; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; border: 1.5px solid var(--border); transition: all 0.2s; font-family: 'DM Sans', sans-serif; text-decoration: none; display: inline-block; border-radius: 2px; }
+  .btn-primary { background: var(--accent); color: #faf6f0; border-color: var(--accent); }
+  .btn-primary:hover { background: var(--accent-dim); border-color: var(--accent-dim); }
+  .btn-ghost { background: transparent; color: var(--ink); border-color: var(--border); }
+  .btn-ghost:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+  .hero-right { background: var(--accent2); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 4rem 3rem; gap: 2.5rem; position: relative; overflow: hidden; }
+  .hero-right::before { content: 'RW'; font-family: 'Playfair Display', serif; font-size: 20rem; font-weight: 900; color: rgba(250,246,240,0.03); position: absolute; top: -3rem; right: -2rem; line-height: 1; pointer-events: none; }
+  /* Subtle warm glow in the dark panel */
+  .hero-right::after { content: ''; position: absolute; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(184,92,56,0.12) 0%, transparent 70%); bottom: -80px; left: -60px; pointer-events: none; }
+  .stat-card { background: rgba(250,246,240,0.06); border: 1px solid rgba(250,246,240,0.1); padding: 1.5rem 2rem; width: 100%; max-width: 280px; border-radius: 3px; }
+  .stat-number { font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 900; color: var(--paper); line-height: 1; }
+  .stat-number em { font-style: normal; color: var(--accent-dim); }
+  .stat-label { font-size: 0.78rem; color: rgba(250,246,240,0.45); font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 0.5rem; }
+
+  .skills-section { display: grid; grid-template-columns: 1fr 1fr 1fr; border-bottom: 1.5px solid var(--border); }
+  .skill-col { padding: 3rem 2.5rem; border-right: 1.5px solid var(--border); }
+  .skill-col:last-child { border-right: none; }
+  .skill-icon { font-size: 2rem; margin-bottom: 1rem; }
+  .skill-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--ink); }
+  .skill-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.2rem; }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .skill-tag { font-size: 0.72rem; font-weight: 500; background: var(--tag-bg); color: var(--ink); padding: 0.3rem 0.7rem; letter-spacing: 0.04em; border-radius: 2px; }
+  .skill-tag.warm { background: var(--accent-light); color: var(--accent); }
+
+  .projects-header { padding: 3.5rem 3rem 2rem; display: flex; align-items: baseline; gap: 1.5rem; border-bottom: 1.5px solid var(--border); }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900; letter-spacing: -1px; color: var(--ink); }
+  .section-num { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); border-left: 2px solid var(--accent); padding-left: 0.6rem; }
+
+  .project-card { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1.5px solid var(--border); min-height: 360px; }
+  .project-visual { background: var(--accent2); display: flex; flex-direction: column; justify-content: center; align-items: center; border-right: 1.5px solid var(--border); padding: 3rem; position: relative; overflow: hidden; }
+  /* Warm terracotta orb decorating the project panel */
+  .project-visual::after { content: ''; position: absolute; width: 220px; height: 220px; border-radius: 50%; background: radial-gradient(circle, rgba(184,92,56,0.18) 0%, transparent 70%); bottom: -60px; right: -60px; }
+  .project-logo { font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 900; color: var(--paper); letter-spacing: -2px; z-index: 1; }
+  .project-logo span { color: var(--accent-dim); }
+  .project-subtitle-vis { font-size: 0.72rem; color: rgba(250,246,240,0.4); letter-spacing: 0.15em; text-transform: uppercase; margin-top: 0.5rem; z-index: 1; }
+  .project-info { padding: 3rem; display: flex; flex-direction: column; justify-content: space-between; background: var(--paper); }
+  .project-meta { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 1rem; flex-wrap: wrap; }
+  .project-type { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+  .project-dot { width: 4px; height: 4px; background: var(--muted); border-radius: 50%; }
+  .project-year { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.08em; }
+  .project-name { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; line-height: 1.15; margin-bottom: 1rem; letter-spacing: -0.5px; color: var(--ink); }
+  .project-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.75; margin-bottom: 1.5rem; }
+  .project-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+  .project-tag { font-size: 0.72rem; font-weight: 500; background: var(--tag-bg); color: var(--ink); padding: 0.3rem 0.8rem; border-radius: 2px; letter-spacing: 0.04em; }
+  .hackathon-label { display: inline-flex; align-items: center; gap: 6px; background: var(--accent-light); color: var(--accent); font-size: 0.72rem; font-weight: 500; padding: 0.35rem 0.8rem; border-radius: 2px; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  .about-section { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1.5px solid var(--border); }
+  .about-left { padding: 4rem 3rem; border-right: 1.5px solid var(--border); }
+  .about-right { padding: 4rem 3rem; background: var(--card-bg); }
+  .about-title { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 1.5rem; color: var(--ink); }
+  .about-body { font-size: 0.9rem; color: var(--muted); line-height: 1.85; }
+  .about-body strong { color: var(--ink); font-weight: 500; }
+  .timeline-item { display: flex; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--tag-bg); }
+  .timeline-item:last-child { border-bottom: none; margin-bottom: 0; }
+  .timeline-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); flex-shrink: 0; margin-top: 5px; }
+  .timeline-title { font-weight: 500; font-size: 0.9rem; margin-bottom: 0.25rem; color: var(--ink); }
+  .timeline-date { font-size: 0.75rem; color: var(--muted); }
+
+  .contact-section { padding: 5rem 3rem; background: var(--accent2); display: flex; justify-content: space-between; align-items: center; gap: 2rem; flex-wrap: wrap; position: relative; overflow: hidden; }
+  /* Warm glow in contact section */
+  .contact-section::before { content: ''; position: absolute; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, rgba(184,92,56,0.15) 0%, transparent 70%); top: -100px; right: -100px; pointer-events: none; }
+  .contact-title { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 900; color: var(--paper); letter-spacing: -1.5px; line-height: 1.1; position: relative; z-index: 1; }
+  .contact-title span { color: var(--accent-dim); }
+  .contact-links { display: flex; flex-direction: column; gap: 1rem; position: relative; z-index: 1; }
+  .contact-link { display: flex; align-items: center; gap: 0.75rem; font-size: 0.85rem; color: rgba(250,246,240,0.55); text-decoration: none; transition: color 0.2s; }
+  .contact-link:hover { color: var(--paper); }
+  .contact-link-icon { width: 36px; height: 36px; border: 1px solid rgba(250,246,240,0.15); display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; border-radius: 2px; }
+
+  footer { padding: 1.2rem 3rem; display: flex; justify-content: space-between; align-items: center; border-top: 1.5px solid var(--border); font-size: 0.75rem; color: var(--muted); letter-spacing: 0.06em; background: var(--paper); }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1rem; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-left { padding: 3rem 1.5rem; border-right: none; border-bottom: 1.5px solid var(--border); }
+    .hero-right { padding: 3rem 1.5rem; min-height: 400px; }
+    .skills-section { grid-template-columns: 1fr; }
+    .skill-col { border-right: none; border-bottom: 1.5px solid var(--border); }
+    .project-card { grid-template-columns: 1fr; }
+    .project-visual { border-right: none; border-bottom: 1.5px solid var(--border); min-height: 220px; }
+    .about-section { grid-template-columns: 1fr; }
+    .about-left { border-right: none; border-bottom: 1.5px solid var(--border); }
+    .projects-header { padding: 2rem 1.5rem 1.5rem; }
+    .project-info { padding: 2rem 1.5rem; }
+    .about-left, .about-right { padding: 2.5rem 1.5rem; }
+    .contact-section { padding: 3rem 1.5rem; flex-direction: column; align-items: flex-start; }
+    footer { padding: 1rem 1.5rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Rosemary Wekesa</div>
+  <div class="nav-links">
+    <a href="#work">Work</a>
+    <a href="#skills">Skills</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <div>
+      <p class="hero-tag">UI/UX Designer &amp; WordPress Developer · Nairobi, Kenya</p>
+      <h1 class="hero-name">Rose<span>mary</span><br>Wekesa</h1>
+      <p class="hero-sub">I design intuitive experiences and build them on WordPress — fast, intentionally, and with a sharp eye for detail.</p>
+      <div class="hero-badges">
+        <span class="badge">WordPress</span>
+        <span class="badge">WooCommerce</span>
+        <span class="badge">UI/UX Design</span>
+        <span class="badge outline">Fast Learner</span>
+      </div>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#work">View Projects</a>
+        <a class="btn btn-ghost" href="#contact">Get in Touch</a>
+      </div>
+    </div>
+    <p style="font-size:0.75rem; color:var(--muted); margin-top:3rem; letter-spacing:0.06em;">OPEN TO JUNIOR &amp; FREELANCE ROLES</p>
+  </div>
+  <div class="hero-right">
+    <div class="stat-card">
+      <div class="stat-number">1<em>+</em></div>
+      <div class="stat-label">Live hackathon project shipped</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">2<em>x</em></div>
+      <div class="stat-label">Iterated &amp; improved post-hackathon</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">∞</div>
+      <div class="stat-label">Curiosity to keep building</div>
+    </div>
+  </div>
+</section>
+
+<section class="skills-section" id="skills">
+  <div class="skill-col">
+    <div class="skill-icon">⚡</div>
+    <div class="skill-title">WordPress Development</div>
+    <p class="skill-desc">Junior-level but moving fast — I can theme, configure, and deploy WordPress sites with real plugins and real outcomes.</p>
+    <div class="skill-tags">
+      <span class="skill-tag">WordPress CMS</span>
+      <span class="skill-tag">Elementor</span>
+      <span class="skill-tag warm">WooCommerce</span>
+      <span class="skill-tag warm">Payment Plugins</span>
+      <span class="skill-tag">Theme Customisation</span>
+    </div>
+  </div>
+  <div class="skill-col">
+    <div class="skill-icon">🎨</div>
+    <div class="skill-title">UI/UX Design</div>
+    <p class="skill-desc">I think in flows and feelings. I design interfaces that guide users naturally, from first click to conversion.</p>
+    <div class="skill-tags">
+      <span class="skill-tag">User Research</span>
+      <span class="skill-tag">Wireframing</span>
+      <span class="skill-tag">Prototyping</span>
+      <span class="skill-tag">Visual Design</span>
+      <span class="skill-tag">Figma</span>
+    </div>
+  </div>
+  <div class="skill-col">
+    <div class="skill-icon">🚀</div>
+    <div class="skill-title">Speed &amp; Adaptability</div>
+    <p class="skill-desc">I pick up tools quickly, iterate without fear, and ship. The Solhydra project was built and improved within a tight timeline.</p>
+    <div class="skill-tags">
+      <span class="skill-tag">Hackathon Ready</span>
+      <span class="skill-tag">Self-taught</span>
+      <span class="skill-tag">Iterative Builder</span>
+      <span class="skill-tag">Problem Solver</span>
+    </div>
+  </div>
+</section>
+
+<div class="projects-header" id="work">
+  <h2 class="section-title">Selected Work</h2>
+  <span class="section-num">01 / Projects</span>
+</div>
+
+<article class="project-card">
+  <div class="project-visual">
+    <div class="project-logo">Sol<span>hydra</span></div>
+    <div class="project-subtitle-vis">Solar Energy E-commerce Platform</div>
+  </div>
+  <div class="project-info">
+    <div>
+      <div class="project-meta">
+        <span class="project-type">WordPress · E-commerce</span>
+        <span class="project-dot"></span>
+        <span class="project-year">2024</span>
+        <span class="project-dot"></span>
+        <span class="hackathon-label">🏆 Hackathon Project</span>
+      </div>
+      <h3 class="project-name">Solhydra — Solar Energy Store</h3>
+      <p class="project-desc">A fully functional e-commerce platform for solar energy products, built during a hackathon and later improved independently. Integrated WooCommerce for product management and a live payment plugin to handle real transactions. The design focuses on trust and ease of purchase — key for first-time solar buyers.</p>
+      <div class="project-tags">
+        <span class="project-tag">WordPress</span>
+        <span class="project-tag">WooCommerce</span>
+        <span class="project-tag">Payment Integration</span>
+        <span class="project-tag">E-commerce UX</span>
+        <span class="project-tag">Product Catalogue</span>
+        <span class="project-tag">Checkout Flow</span>
+      </div>
+    </div>
+    <div>
+      <span style="font-size:0.78rem; color:var(--muted);">Hackathon build · Independently improved post-event</span>
+    </div>
+  </div>
+</article>
+
+<section class="about-section" id="about">
+  <div class="about-left">
+    <h2 class="about-title">A bit about me</h2>
+    <p class="about-body">
+      I'm Rosemary — a designer who codes and a developer who cares deeply about user experience.<br><br>
+      My journey into WordPress was fast by necessity: I joined a hackathon, had to ship something real, and I did. What I discovered is that I <strong>love</strong> the process of turning a design into something someone can actually click, buy, and trust.<br><br>
+      I'm junior-level in WordPress but senior-level in curiosity. I don't just complete tasks — I go back and make them better, which is exactly what I did with Solhydra after the hackathon ended.<br><br>
+      Currently looking for opportunities where I can grow fast, contribute meaningfully, and keep building.
+    </p>
+  </div>
+  <div class="about-right">
+    <h3 class="about-title" style="font-size:1.3rem; margin-bottom:2rem;">Journey so far</h3>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <div class="timeline-title">Solhydra Hackathon — Built &amp; Shipped</div>
+        <div class="timeline-date">WordPress + WooCommerce · First real project under pressure</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <div class="timeline-title">Solhydra v2 — Independent Iteration</div>
+        <div class="timeline-date">Improved UX, refined checkout flow, enhanced design</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <div class="timeline-title">UI/UX Design Practice</div>
+        <div class="timeline-date">Wireframes, prototypes &amp; visual design across projects</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <div class="timeline-title">Now — Building more, shipping faster</div>
+        <div class="timeline-date">Open to junior &amp; freelance opportunities in Nairobi &amp; remote</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact-section" id="contact">
+  <h2 class="contact-title">Let's build<br>something<br><span>together.</span></h2>
+  <div class="contact-links">
+    <a class="contact-link" href="mailto:your@email.com">
+      <span class="contact-link-icon">✉</span>
+      your@email.com
+    </a>
+    <a class="contact-link" href="https://linkedin.com/in/yourprofile">
+      <span class="contact-link-icon">in</span>
+      LinkedIn · Rosemary Wekesa
+    </a>
+    <a class="contact-link" href="#">
+      <span class="contact-link-icon">🇰🇪</span>
+      Nairobi, Kenya · Open to remote
+    </a>
+  </div>
+</section>
+
+<footer>
+  <span>© 2025 Rosemary Wekesa</span>
+  <span>Designed &amp; built with intention.</span>
+</footer>
+
+</body>
+</html>
